@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import Cezalar from '../Cezalar';
-import { FaCheck, FaTimes } from 'react-icons/fa'; // Font Awesome ikonları
 
 const Card = () => {
   const [isFlipped, setIsFlipped] = useState(false);
@@ -58,7 +57,7 @@ const Card = () => {
     <div style={{ userSelect: "none"}} className="flex flex-col justify-center items-center h-screen">
       <div className={`w-3/4 h-3/4 border border-gray-300 rounded-lg shadow-lg cursor-pointer relative ${backgroundColor}`} onClick={handleClick}>
         <div className={`absolute top-0 left-0 w-full h-full flex justify-center items-center transform transition-transform duration-500 ${isFlipped ? 'rotate-y-0' : 'rotate-y-180'}`}>
-          <p className="text-gray-800 text-lg font-bold text-xl text-center px-4 py-2">
+          <p className="text-gray-800 font-bold text-xl text-center px-4 py-2">
             {message}
           </p>
         </div>
