@@ -1,27 +1,25 @@
 import React, { useState, useEffect } from 'react';
 import Cezalar from '../Cezalar';
 
-const Card = () => {
+const Card = ({ category }) => {
   const [isFlipped, setIsFlipped] = useState(false);
-  const [cezaIndex, setCezaIndex] = useState({ difficulty: 'kolay', index: 0 });
   const [seenCezalar, setSeenCezalar] = useState([]);
   const [backgroundColor, setBackgroundColor] = useState('bg-blue-500'); // Başlangıçta mavi renk
   const [message, setMessage] = useState('Başlamak için tıkla');
+  const [cezaIndex, setCezaIndex] = useState(0);
 
   useEffect(() => {
-    // Her sayfa yenilendiğinde random bir index seç
-    const randomDifficulty = ['kolay', 'orta', 'zor'][Math.floor(Math.random() * 3)];
-    const randomIndex = Math.floor(Math.random() * Cezalar[randomDifficulty].length);
-    setCezaIndex({ difficulty: randomDifficulty, index: randomIndex });
+    // Her kategori değiştiğinde random bir index seç
+    const randomIndex = Math.floor(Math.random() * Cezalar[category].length);
+    setCezaIndex(randomIndex);
     setSeenCezalar([]); // Yeniden başladığımızda görülen cezaları sıfırla
-  }, []);
+  }, [category]);
 
   const handleClick = () => {
     if (!isFlipped) {
       setIsFlipped(true);
-      setBackgroundColor(getBackgroundColor(cezaIndex.difficulty));
-      setMessage(getRandomCeza(cezaIndex.difficulty));
-      markCezaAsSeen(cezaIndex);
+      setBackgroundColor(getBackgroundColor(category));
+      setMessage(getRandomCeza());
     } else {
       setIsFlipped(false);
       setBackgroundColor('bg-blue-500'); // Kartı çevirdiğimizde arka plan rengini mavi yap
@@ -29,15 +27,19 @@ const Card = () => {
     }
   };
 
-
-  const markCezaAsSeen = (index) => {
-    setSeenCezalar([...seenCezalar, index]);
-  };
-
-  const getRandomCeza = (difficulty) => {
-    const cezalar = Cezalar[difficulty];
-    const randomIndex = Math.floor(Math.random() * cezalar.length);
-    return cezalar[randomIndex];
+  const getRandomCeza = () => {
+    const cezalar = Cezalar[category];
+    if (seenCezalar.length === cezalar.length) {
+      return "Bu seviyedeki cezalar bitti diğer zorluk seviyelerinden devam edebilirsin :) ";
+    } else {
+      let nextIndex = cezaIndex;
+      while (seenCezalar.includes(nextIndex)) {
+        nextIndex = (nextIndex + 1) % cezalar.length;
+      }
+      setSeenCezalar([...seenCezalar, nextIndex]);
+      setCezaIndex(nextIndex);
+      return cezalar[nextIndex];
+    }
   };
 
   const getBackgroundColor = (difficulty) => {
