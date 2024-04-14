@@ -20,6 +20,7 @@
   ],
   "start_url": ".",
   "display": "standalone",
+  "description": "Rakibinin cezalarına beraber karar verelim",  
   "theme_color": "#000000",
   "background_color": "#ffffff"
 }
